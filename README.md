@@ -1,1 +1,1 @@
-# Podcast-Search-Me-Myself-and-AI
+# ChatGPT Podcast Search - Me, Myself, and AI
