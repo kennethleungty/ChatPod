@@ -1,6 +1,9 @@
 # Data
 audio/
 
+# Venv
+chat_podcast_venv/
+
 # Administrative
 info.txt
 
