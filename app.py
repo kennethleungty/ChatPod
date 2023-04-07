@@ -1,8 +1,8 @@
 '''
 ===================================
-  Module: Landing Page
+  Module: Main Page UI (Streamlit)
   Author: Kenneth Leung
-  Last Modified: 15 Mar 2023
+  Last Modified: 07 Apr 2023
 ===================================
 '''
 from streamlit_extras.app_logo import add_logo
@@ -20,7 +20,7 @@ with open('config.yml', 'r', encoding='utf8') as ymlfile:
     cfg = box.Box(yaml.safe_load(ymlfile))
 
 st.set_page_config(page_icon='assets/favicon-32x32.png',
-                   page_title='PodChat',
+                   page_title='ChatPod',
                    initial_sidebar_state="auto")
 
 add_logo('assets/Banner_1.png', height=100)
@@ -41,14 +41,11 @@ if 'episode_list' not in st.session_state:
 # ===============================
 #            Layout
 # ===============================
-st.sidebar.title('Welcome to PodChat')
-# st.image('assets/7435432.jpg')
 st.image('assets/main_banner_with_text.png')
-st.text(' ')
 
+st.sidebar.title('Welcome to ChatPod')
 st.sidebar.selectbox('Step 1: Select Podcast', ['Me, Myself, and AI'])
 st.sidebar.image('assets/Banner_3.png')
-
 
 with st.sidebar.expander("Step 2: Type your OpenAI API Key and press Enter"):
     st.session_state.OPENAI_API_KEY = st.text_input(label='*Note: We do NOT store your OpenAPI key*',
@@ -60,10 +57,9 @@ st.sidebar.text(" ")
 st.sidebar.text(" ")
 st.sidebar.text(" ")
 st.sidebar.text(" ")
-st.sidebar.caption('Developed by [Kenneth Leung](https://github.com/kennethleungty)')
+st.sidebar.caption('Brought to you by **[Kenneth Leung](https://github.com/kennethleungty)**')
 
 query_tab, episodes_tab = st.tabs(["Ask Podcast", "Select Episodes"])
-
 
 # ===============================
 #           Episodes Tab
@@ -80,7 +76,6 @@ with episodes_tab:
     if st.button('➡️ Update Episode Selection', on_click=update_vectorstore, kwargs={'checkboxes':checkboxes}):
         st.success(f'Updated! New vectorstore size = {len(st.session_state.vectorstore.docstore._dict)}')
     
-
 # ===============================
 #           Query Tab
 # ===============================
@@ -93,7 +88,7 @@ with query_tab:
                                 label_visibility='collapsed')
         
     if st.session_state.OPENAI_API_KEY in [None, '']:
-        st.success('👈❗Please first enter your OpenAI API key in the left sidebar. Thank you!')
+        st.info('👈Please first enter your OpenAI API key in the left sidebar. Thank you!')
     else:
         embeddings = OpenAIEmbeddings(openai_api_key=st.session_state.OPENAI_API_KEY)
 
@@ -101,32 +96,27 @@ with query_tab:
         if 'vectorstore' not in st.session_state:
             st.session_state.vectorstore = FAISS.load_local(f'{cfg.VECTORSTORE_PATH}/all_podcasts', embeddings)
 
-
         # =============================================
         #                 Query Section
         # =============================================
         if user_query not in [cfg.PLACEHOLDER_TEXT, '']:
             # Pass the query to ChatGPT
             response, metadata = run_chain(user_query)
-
             st.write(response)
+            st.text(' ')
+            with st.container():
+                tab1, tab2 = st.tabs(["Snippet 1", "Snippet 2"])
+                with tab1:
+                    display_snippet(metadata[1])    
 
+                with tab2:
+                    display_snippet(metadata[0])    
 
-        # with st.container():
-        #     tab1, tab2 = st.tabs(["Response", "Sources"])
-        #     with tab1:
-        #         st.write(f"{response['answer']}")
-        #     with tab2:
-        #         # st.subheader('Source Documents')
-        #         for i, doc in enumerate(response['source_documents']):
-        #             st.caption(f'Relevant Text Chunk {i+1}:')
-        #             # PDF has different metadata structure
-        #             if db_factsheets:
-        #                 st.caption(f'Retrieved from: `{doc.metadata["file_path"]}`')
-        #                 st.caption(f'Page number {doc.metadata["page_number"]}')
-        #             else:
-        #                 st.caption(f'Retrieved from: `{doc.metadata["source"]}`')
-        #             st.write(doc.page_content)
-        #             st.markdown("""---""")
-        #     st.text(" ")
-
+# Hide Streamlit footer
+hide_streamlit_style = """
+            <style>
+            #MainMenu {visibility: hidden;}
+            footer {visibility: hidden;}
+            </style>
+            """
+st.markdown(hide_streamlit_style, unsafe_allow_html=True) 

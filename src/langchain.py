@@ -1,3 +1,10 @@
+'''
+===================================
+  Module: Langchain Functions
+  Author: Kenneth Leung
+  Last Modified: 07 Apr 2023
+===================================
+'''
 from langchain import LLMChain
 from langchain.chat_models import ChatOpenAI
 from langchain.prompts.chat import (
@@ -38,7 +45,6 @@ def get_metadata(docs):
         url_raw = doc[0].metadata['url']
         url_embed = url_raw.replace('.com/episode/', '.com/embed/episode/') + \
                     f'?utm_source=generator&t={start_time}'
-
         metadata_i = {'text': text,
                       'score': score,
                       'url_embed': url_embed}
