@@ -12,11 +12,8 @@ from langchain.embeddings.openai import OpenAIEmbeddings
 from langchain.vectorstores import FAISS
 
 import box
-import os
 import streamlit as st
-import time
 import yaml
-import base64
 
 # Import config vars
 with open('config.yml', 'r', encoding='utf8') as ymlfile:

@@ -1,11 +1,9 @@
 from langchain import LLMChain
-from langchain.embeddings.openai import OpenAIEmbeddings
 from langchain.chat_models import ChatOpenAI
 from langchain.prompts.chat import (
     ChatPromptTemplate,
     SystemMessagePromptTemplate,
     HumanMessagePromptTemplate)
-from langchain.vectorstores import FAISS
 import streamlit as st
 
 
