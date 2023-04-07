@@ -22,3 +22,6 @@ ___
 - Streamlit: Frontend interface
 - Render: Deployment of Dockerized app (cron-job.org to keep instance active)
 ___
+
+## To Do
+- [ ] Create Upload page (pipeline from audio to chat over vectorstore)
