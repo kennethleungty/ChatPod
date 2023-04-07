@@ -1,7 +1,7 @@
 # Data
 audio/
 archive/
-data/podcast_metadata_raw.csv
+podcast_metadata_raw.csv
 
 # Venv
 chat_podcast_venv/
