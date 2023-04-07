@@ -2,6 +2,7 @@
 audio/
 archive/
 podcast_metadata_raw.csv
+*.pptx
 
 # Venv
 chat_podcast_venv/
