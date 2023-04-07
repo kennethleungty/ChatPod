@@ -64,6 +64,8 @@ query_tab, episodes_tab, podcast_tab = st.tabs(["Ask Podcast", "Select Episodes"
 #           Episodes Tab
 # ===============================
 with episodes_tab:
+    if st.session_state.OPENAI_API_KEY in [None, '']:
+        st.success('👈Please first enter your OpenAI API key in the left sidebar. Thank you!')
     if st.session_state.podcast == 'Me, Myself, and AI':
         st.caption("Select episodes to include for querying and then press the \
                     `Update Episode Selection` button at the bottom of page")
