@@ -47,8 +47,8 @@ st.sidebar.title('Welcome to ChatPod')
 st.sidebar.selectbox('Step 1: Select Podcast', ['Me, Myself, and AI'])
 st.sidebar.image('assets/Banner_3.png')
 
-with st.sidebar.expander("Step 2: Type your OpenAI API Key and press Enter"):
-    st.session_state.OPENAI_API_KEY = st.text_input(label='*Note: We do NOT store your OpenAPI key*',
+with st.sidebar.expander("Step 2: Enter your OpenAI API Key"):
+    st.session_state.OPENAI_API_KEY = st.text_input(label='*We do NOT store and cannot view your API key*',
                                                     placeholder='sk-p999HAfj6Cm1bO00SXgJc7kFxvFPtQ1KBBWrqSOU',
                                                     type="password",
                                                     help='You can find your Secret API key at \
