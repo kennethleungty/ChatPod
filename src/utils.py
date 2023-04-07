@@ -17,7 +17,7 @@ if 'OPENAI_API_KEY' not in st.session_state:
 
 def get_episode_list():
     episode_list = os.listdir('vectorstore')
-    episode_list = [x for x in episode_list if x != 'all_podcasts']
+    episode_list = sorted([x for x in episode_list if x != 'all_podcasts'])
 
     return episode_list
 
