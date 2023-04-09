@@ -103,7 +103,7 @@ def run_chain(query):
     review_chain = LLMChain(prompt=review_prompt,
                             llm=llm)
     
-    overall_chain = SimpleSequentialChain(chains=[main_chain, review_chain], verbose=True)
+    overall_chain = SimpleSequentialChain(chains=[main_chain, review_chain], verbose=False)
     reviewed_response = overall_chain.run(query)
 
     if '||No Info||' in reviewed_response:
