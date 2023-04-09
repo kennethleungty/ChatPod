@@ -41,9 +41,15 @@ def update_vectorstore(checkboxes):
 
 
 def display_snippet(metadata):
-    components.html(f"""
-                    <iframe style="border-radius:12px" src="{metadata['url_embed']}" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
-                    """)
-    
-    st.caption(f"**Transcript Snippet**: {metadata['text']}")
-    st.caption(f"**Similarity Score**: {round(metadata['score'],3)}")
+    if metadata == 'No Info':
+         st.caption('No relevant information found from the vector database for this query')
+         st.image('assets/5199128.jpg')
+    else:
+        st.caption('Click Play to listen from the timestamp at which the response was obtained')
+        components.html(f"""
+                        <iframe style="border-radius:12px" src="{metadata['url_embed']}" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+                        """)
+        with st.expander('View metadata'):
+            st.caption(f"**Transcript Snippet**: {metadata['text']}")
+            st.caption(f"**Similarity Score**: {round(metadata['score'],3)}")
+

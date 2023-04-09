@@ -118,7 +118,7 @@ with query_tab:
                                 label_visibility='collapsed')
         
     if st.session_state.OPENAI_API_KEY in [None, '']:
-        st.success('👈Please first enter your OpenAI API key in the left sidebar. Thank you!')
+        st.success('👈Please enter your OpenAI API key in the left sidebar. Thank you!')
     else:
         embeddings = OpenAIEmbeddings(openai_api_key=st.session_state.OPENAI_API_KEY)
 

@@ -6,7 +6,9 @@
 ===================================
 '''
 from langchain import LLMChain
+from langchain.chains import SimpleSequentialChain
 from langchain.chat_models import ChatOpenAI
+from langchain.prompts import PromptTemplate
 from langchain.prompts.chat import (
     ChatPromptTemplate,
     SystemMessagePromptTemplate,
@@ -54,8 +56,9 @@ def get_metadata(docs):
     return metadata_list
 
 
-def define_prompt(context):
-    system_template = f"""Use the following pieces of context to answer the question at the end. If you don't know the answer, just say that you don't know, don't try to make up an answer.
+def define_main_prompt(context):
+    system_template = f"""Use the following pieces of context to answer the question at the end. 
+    If you don't know the answer, just say that you don't know, don't try to make up an answer.
 
     {context}
 
@@ -71,16 +74,40 @@ def define_prompt(context):
     return prompt
 
 
+def define_review_prompt():
+    template = """You are an AI reviewer of the following response of a large language model.
+
+    {response}
+
+    If the response above talks about it being unsure of the answer or has no information about the specific topic, 
+    return the given response directly without changing any word, but append the string
+    '||No Info||' at the end of the response.   
+
+    Do not give any other response that is not in line with the above instructions.
+
+    """
+    prompt_template = PromptTemplate(input_variables=["response"], template=template)
+
+    return prompt_template
+
+
 def run_chain(query):
     llm = define_llm()
     docs = retrieve_vectors(query)
     context = compile_context(docs)
     metadata = get_metadata(docs)
-    prompt = define_prompt(context)
-    llm_chain = LLMChain(prompt=prompt, 
-                         llm=llm, 
-                         verbose=False)
+    main_prompt = define_main_prompt(context)
+    main_chain = LLMChain(prompt=main_prompt, 
+                         llm=llm)
+    review_prompt = define_review_prompt()
+    review_chain = LLMChain(prompt=review_prompt,
+                            llm=llm)
     
-    response = llm_chain.predict(question=query)
-    
-    return response, metadata
+    overall_chain = SimpleSequentialChain(chains=[main_chain, review_chain], verbose=True)
+    reviewed_response = overall_chain.run(query)
+
+    if '||No Info||' in reviewed_response:
+        reviewed_response = reviewed_response.replace('||No Info||', '')
+        metadata = ["No Info", "No Info"]
+
+    return reviewed_response, metadata
