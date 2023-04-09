@@ -10,6 +10,7 @@ from src.utils import *
 from src.langchain import *
 from langchain.embeddings.openai import OpenAIEmbeddings
 from langchain.vectorstores import FAISS
+from dotenv import dotenv_values
 
 import box
 import streamlit as st
@@ -53,6 +54,12 @@ with st.sidebar.expander("Step 2: Enter your OpenAI API Key"):
                                                     type="password",
                                                     help='You can find your Secret API key at \
                                                           https://platform.openai.com/account/api-keys')
+    
+    # Change if match private auth key
+    config = dotenv_values(".env")
+    if st.session_state.OPENAI_API_KEY == config['SECRET_PASSWORD']:
+        st.session_state.OPENAI_API_KEY = config['OPENAI_PRIVATE_API_KEY']
+
 st.sidebar.text(" ")
 st.sidebar.text(" ")
 st.sidebar.text(" ")
@@ -142,9 +149,6 @@ edit_streamlit_style = """
             footer {visibility: hidden;}
             .block-container {
                     padding-top: 2rem;
-                    padding-bottom: 0rem;
-                    padding-left: 0rem;
-                    padding-right: 0rem;
                 }
             </style>
             """
