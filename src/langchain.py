@@ -75,16 +75,14 @@ def define_main_prompt(context):
 
 
 def define_review_prompt():
-    template = """You are an AI reviewer of the following response of a large language model.
+    template = """You are an AI reviewer of the following answer from a large language model.
 
-    {response}
+    LLM response: {response}
 
-    If the response above talks about it being unsure of the answer or has no information about the specific topic, 
-    return the given response directly without changing any word, but append the string
-    '||No Info||' at the end of the response.   
+    If the LLM response above mentions about it being unsure of the answer or has no information about the specific topic, 
+    return the LLM response directly without changing any word at all, but append the string '||No Info||' at the end of the response.   
 
-    Do not give any other response that is not in line with the above instructions.
-
+    Do not give return any other response that is not in line with the above instructions. Do not say things like well done or anything like that.
     """
     prompt_template = PromptTemplate(input_variables=["response"], template=template)
 
