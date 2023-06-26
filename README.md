@@ -1,6 +1,6 @@
 # ChatPod - Q&A over your Podcasts
 
-**Visit ChatPod at https://chatpod.onrender.com**
+**Visit ChatPod at https://chatpod.onrender.com** (Currently inactive, ping me if you would like to view the demo)
 <img
   src="assets/screenshot.png"
   style="display: inline-block; margin: 0 auto;">
